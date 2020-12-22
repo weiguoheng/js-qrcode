@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>Cross-Browser QRCode generator for Javascript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="qrcode.js"></script>
+</head>
+<body>
+<!--输入要生成的url-->
+<input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%;" disabled /><br />
+<!--要生成的画布-->
+<div id="qrcode" style="width:500px; height:500px; margin-top:15px;"></div>
+<!--要放到中间的图片-->
+<img id="scream" src="https://bizaladdin-image.baidu.com/0/pic/5c8ecfdee4be3273403024586b96a606.jpg" style="display: none;" alt="The Scream" width="220" height="277">
+<script type="text/javascript">
+let qrcode = new QRCode(document.getElementById("qrcode"), {
+    width : 500,
+    height : 500
+});
+function makeCode () {
+	let elText = document.getElementById("text");
+    let centerImg = document.getElementById("scream");
+	if (!elText.value) {
+		alert("Input a text");
+		elText.focus();
+		return;
+	}
+	qrcode.makeCode(elText.value, centerImg);
+}
+
+makeCode();
+
+$("#text").
+	on("blur", function () {
+    qrcode.clear();
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+            qrcode.clear();
+			makeCode();
+		}
+	});
+</script>
+</body>
